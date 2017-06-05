@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Word matrixator</title>
+  
+  <link rel="stylesheet" type="text/css" href="reset.css">
+  <style type="text/css" media="screen">
+    body, html, .container {
+      height:  100%;
+      font-size: 16px;
+      font-family: monospace;
+      background-color: #111;
+      color: #45EF46;
+    }
+    #word {
+      display: block;
+      width: 100%;
+      margin: 100px 0 50px;
+      padding: 0;
+      font-size: 5em;
+      font-weight: 100;
+      color: #45EF46;
+      text-align: center;
+      background-color: #111;
+      border: 0;
+      text-shadow: 0px 0px 11px #45ef46;
+    }
+    #word:focus, #word:active, #matrixarize:focus, #matrixarize:active { outline: 0; }
+    #display {
+      width: 100%;
+      text-align: center;
+      height: 120px; 
+      font-size: 5em;
+      text-shadow: 0px 0px 11px #45ef46;
+    }
+    #matrixarize {
+      display: block;
+      margin: 0 auto;
+      font-size: 4em;
+      margin-bottom: 50px;
+      cursor: pointer;
+      background-color: #45EF46;
+      border: 0;
+      padding: 15px 45px;
+      border-radius: 0;
+      box-shadow: 0px 0px 30px 5px #00ff01;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <input type="text" id="word">
+    <button id="matrixarize">Matrixarize!!</button>
+    <div id="display"></div>
+  </div>
+  
+  <script type="text/javascript">
+    const input   = document.getElementById('word'),
+          display = document.getElementById('display'),
+          button  = document.getElementById('matrixarize'),
+          matrizarize = function(event) {
+      const word = input.value
+      let randomWord = (function(){
+        let initialWord = ''
+        for (let i = 0; i < word.length; i++) {
+          let randomCharCode = Math.floor(Math.random() * 25) + 1  
+          initialWord += String.fromCharCode(97 + randomCharCode)
+        }
+        return initialWord
+      })()
+      
+      let interval = setInterval(function(){
+        if (randomWord != word) {
+          for (let i = 0; i < word.length; i++) {
+            if (randomWord[i] != word[i]) {
+              if (word[i] == ' ') {
+                randomWord = randomWord.replaceAt(i, ' ')
+                console.log('entro', randomWord)
+              } else {
+                let randomCharCode = Math.floor(Math.random() * 26) + 0
+                randomWord = randomWord.replaceAt(i, String.fromCharCode(97 + randomCharCode))
+              }
+              display.innerHTML = randomWord
+            }
+          }
+        } else {
+          clearInterval(interval)
+        }
+        console.log(randomWord)
+      }, 1000/30)
+    }
+    
+    button.addEventListener('click', matrizarize)
+    input.focus()
+    
+    String.prototype.replaceAt = function(index, replacement) {
+      return this.substr(0, index) + replacement + this.substr(index + replacement.length)
+    }
+  </script>
+</body>
+</html>
